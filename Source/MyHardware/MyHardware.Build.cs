@@ -26,6 +26,8 @@ public class MyHardware : ModuleRules
 			new string[]
 			{
 				"Core",
+                "Networking",
+                "Sockets",
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);
