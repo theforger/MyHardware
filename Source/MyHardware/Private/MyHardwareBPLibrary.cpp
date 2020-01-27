@@ -3,6 +3,7 @@
 #include "MyHardwareBPLibrary.h"
 #include "GameFramework/GameSession.h"
 #include "SocketSubsystem.h"
+#include "SlateBasics.h"
 #include "CoreGlobals.h"
 #include "MyHardware.h"
 
@@ -45,5 +46,15 @@ const FString UMyHardwareBPLibrary::GetLocalIP(UObject* WorldContextObject)
 		}
 	}
 	return "WorldContextObject is FALSE";
+}
+
+bool UMyHardwareBPLibrary::IsGamepadConnected()
+{
+	auto GamepadDetectApplication = FSlateApplication::Get().GetPlatformApplication();
+	if (GamepadDetectApplication.Get() != nullptr && GamepadDetectApplication->IsGamepadAttached())
+	{
+		return true;
+	}
+	return false;
 }
 
