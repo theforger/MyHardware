@@ -23,4 +23,7 @@ class UMyHardwareBPLibrary : public UBlueprintFunctionLibrary
 
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "Is Capslock Active", Keywords = "Hardware"), Category = "Hardware")
 		static bool IsCapsLockActive();
+
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Change Volume", Keywords = "Hardware"), Category = "Hardware")
+		static void ChangeVolume(float Volume);
 };
