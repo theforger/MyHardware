@@ -15,6 +15,12 @@ class UMyHardwareBPLibrary : public UBlueprintFunctionLibrary
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "GetLocalIP", Keywords = "Hardware"), Category = "Hardware")
 		static const FString GetLocalIP(UObject* WorldContextObject);
 	
-	UFUNCTION(BlueprintPure, meta = (DisplayName = "IsGamepadConnected", Keywords = "Hardware"), Category = "Hardware")
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Is Gamepad Connected", Keywords = "Hardware"), Category = "Hardware")
 		static bool IsGamepadConnected();
+
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Is Mouse Connected", Keywords = "Hardware"), Category = "Hardware")
+		static bool IsMouseConnected();
+
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Is Capslock Active", Keywords = "Hardware"), Category = "Hardware")
+		static bool IsCapsLockActive();
 };

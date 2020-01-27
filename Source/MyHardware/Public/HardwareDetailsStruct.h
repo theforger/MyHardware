@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GenericPlatform/GenericPlatformMisc.h"
 #include "HardwareDetailsStruct.generated.h"
 
 /**

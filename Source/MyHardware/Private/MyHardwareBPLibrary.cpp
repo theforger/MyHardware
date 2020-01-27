@@ -4,6 +4,7 @@
 #include "GameFramework/GameSession.h"
 #include "SocketSubsystem.h"
 #include "SlateBasics.h"
+#include "Input/Events.h"
 #include "CoreGlobals.h"
 #include "MyHardware.h"
 
@@ -52,6 +53,26 @@ bool UMyHardwareBPLibrary::IsGamepadConnected()
 {
 	auto GamepadDetectApplication = FSlateApplication::Get().GetPlatformApplication();
 	if (GamepadDetectApplication.Get() != nullptr && GamepadDetectApplication->IsGamepadAttached())
+	{
+		return true;
+	}
+	return false;
+}
+
+bool UMyHardwareBPLibrary::IsMouseConnected()
+{
+	auto MouseDetectApplication = FSlateApplication::Get().GetPlatformApplication();
+	if (MouseDetectApplication.Get() != nullptr && MouseDetectApplication->IsMouseAttached())
+	{
+		return true;
+	}
+	return false;
+}
+
+bool UMyHardwareBPLibrary::IsCapsLockActive()
+{
+	auto CapslockDetectApplication = FSlateApplication::Get().GetPlatformApplication();
+	if (CapslockDetectApplication.Get() != nullptr && CapslockDetectApplication->GetModifierKeys().AreCapsLocked())
 	{
 		return true;
 	}
