@@ -3,13 +3,16 @@
 #include "MyHardwareBPLibrary.h"
 #include "GameFramework/GameSession.h"
 #include "SocketSubsystem.h"
+#if PLATFORM_WINDOWS
 #include "Windows/AllowWindowsPlatformTypes.h"
 #include <mmdeviceapi.h>
 #include <endpointvolume.h>
 #include "Windows/HideWindowsPlatformTypes.h"
+#endif
 #include "SlateBasics.h"
 #include "Input/Events.h"
 #include "CoreGlobals.h"
+#include "Engine.h"
 #include "MyHardware.h"
 
 /*#define GLog GetGlobalLogSingleton();*/
@@ -23,15 +26,19 @@ UMyHardwareBPLibrary::UMyHardwareBPLibrary(const FObjectInitializer& ObjectIniti
 FHardwareDetailsStruct UMyHardwareBPLibrary::GetCurrentHardware()
 {
 	FHardwareDetailsStruct CurrentHardware;
+#if PLATFORM_WINDOWS
+
 	CurrentHardware.CPUBrand = *FWindowsPlatformMisc::GetCPUBrand();
 	CurrentHardware.CPUVendor = *FWindowsPlatformMisc::GetCPUVendor();
 	CurrentHardware.NumberOfCoresIncludingHyperthread = FWindowsPlatformMisc::NumberOfCoresIncludingHyperthreads();
 	CurrentHardware.NumberOfCores = FWindowsPlatformMisc::NumberOfCores();
 	CurrentHardware.Is64BitOS = FWindowsPlatformMisc::Is64bitOperatingSystem();
 	CurrentHardware.PrimaryGPUBrand = FWindowsPlatformMisc::GetPrimaryGPUBrand();
-	CurrentHardware.MacAddress = FGenericPlatformMisc::GetMacAddressString();
 	CurrentHardware.BatteryLevel = FWindowsPlatformMisc::GetBatteryLevel();
 	CurrentHardware.OSVersion = FWindowsPlatformMisc::GetOSVersion();
+#endif // PLATFORM_WINDOWS
+
+	CurrentHardware.MacAddress = FGenericPlatformMisc::GetMacAddressString();
 	CurrentHardware.DeviceTemperature = FGenericPlatformMisc::GetDeviceTemperatureLevel();
 	CurrentHardware.EpicAccountID = FGenericPlatformMisc::GetEpicAccountId();
 
@@ -111,5 +118,10 @@ void UMyHardwareBPLibrary::ChangeVolume(float Volume)
 
 	CoUninitialize();
 #endif // PLATFORM_WINDOWS
+}
+
+void UMyHardwareBPLibrary::MoveScreen(FVector2D Pos)
+{
+	GEngine->GameViewport->GetWindow().Get()->MoveWindowTo(Pos);
 }
 

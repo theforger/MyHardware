@@ -26,4 +26,7 @@ class UMyHardwareBPLibrary : public UBlueprintFunctionLibrary
 
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Change Volume", Keywords = "Hardware"), Category = "Hardware")
 		static void ChangeVolume(float Volume);
+
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Move Window", Keywords = "Software"), Category = "Software")
+		static void MoveScreen(FVector2D Pos);
 };
