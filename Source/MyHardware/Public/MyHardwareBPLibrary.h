@@ -31,5 +31,5 @@ class UMyHardwareBPLibrary : public UBlueprintFunctionLibrary
 		static void MoveScreen(FVector2D Pos);
 
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Create Icon", Keywords = "Software"), Category = "Software")
-		static bool CreateIcon(FString IconPath);
+		static bool CreateIcon(FString IconPath, FString Tip, FString Content, FString ContentTitle);
 };

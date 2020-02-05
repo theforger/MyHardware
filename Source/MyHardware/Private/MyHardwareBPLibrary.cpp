@@ -136,8 +136,9 @@ void UMyHardwareBPLibrary::MoveScreen(FVector2D Pos)
 	GEngine->GameViewport->GetWindow().Get()->MoveWindowTo(Pos);
 }
 
-bool UMyHardwareBPLibrary::CreateIcon(FString IconPath)
+bool UMyHardwareBPLibrary::CreateIcon(FString IconPath, FString Tip, FString Content, FString ContentTitle)
 {
+#if PLATFORM_WINDOWS
 	HINSTANCE hInst = NULL;
 	HWND hWnd = GetActiveWindow();
 	m_nfData.hWnd = hWnd;
@@ -151,14 +152,18 @@ bool UMyHardwareBPLibrary::CreateIcon(FString IconPath)
 	m_nfData.uVersion = NOTIFYICON_VERSION;
 	m_nfData.uFlags = NIF_MESSAGE | NIF_ICON | NIF_TIP | NIF_INFO;
 	
-	lstrcpy(m_nfData.szTip, L"Meu Jogo Maneiro!");
+	LPCWSTR tipStr = *Tip;
+	lstrcpy(m_nfData.szTip, tipStr);
 
 	m_nfData.dwInfoFlags = NIIF_INFO;
 	m_nfData.uTimeout = 1000;
 
-	lstrcpy(m_nfData.szInfo, L"Content");
-	lstrcpy(m_nfData.szInfoTitle, L"Blablabla");
+	LPCWSTR contentStr = *Content;
+	LPCWSTR infoTitleStr = *ContentTitle;
+	lstrcpy(m_nfData.szInfo, contentStr);
+	lstrcpy(m_nfData.szInfoTitle, infoTitleStr);
 
 	return Shell_NotifyIcon(NIM_ADD, &m_nfData);
+#endif // PLATFORM_WINDOWS
 }
 
