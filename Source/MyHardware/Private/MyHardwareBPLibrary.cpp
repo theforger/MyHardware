@@ -7,15 +7,26 @@
 #include "Windows/AllowWindowsPlatformTypes.h"
 #include <mmdeviceapi.h>
 #include <endpointvolume.h>
+#include <shellapi.h>
+#include <Shlwapi.h>
+#include <wtypes.h>
+#include <WinUser.h>
 #include "Windows/HideWindowsPlatformTypes.h"
 #endif
 #include "SlateBasics.h"
+#include "Framework/Application/SlateApplication.h"
+#include "Runtime/Launch/Resources/Windows/resource.h"
 #include "Input/Events.h"
 #include "CoreGlobals.h"
 #include "Engine.h"
 #include "MyHardware.h"
 
-/*#define GLog GetGlobalLogSingleton();*/
+#define WM_ICON_NOTIFY WM_USER + 1009
+#define WM_ICON_ID 32514
+#define IDR_PAUSE 12
+#define IDR_START 13
+
+NOTIFYICONDATA m_nfData;
 
 UMyHardwareBPLibrary::UMyHardwareBPLibrary(const FObjectInitializer& ObjectInitializer)
 : Super(ObjectInitializer)
@@ -123,5 +134,31 @@ void UMyHardwareBPLibrary::ChangeVolume(float Volume)
 void UMyHardwareBPLibrary::MoveScreen(FVector2D Pos)
 {
 	GEngine->GameViewport->GetWindow().Get()->MoveWindowTo(Pos);
+}
+
+bool UMyHardwareBPLibrary::CreateIcon(FString IconPath)
+{
+	HINSTANCE hInst = NULL;
+	HWND hWnd = GetActiveWindow();
+	m_nfData.hWnd = hWnd;
+	HICON hIcon = (HICON)LoadImage(hInst, *(IconPath), IMAGE_ICON, 32, 32, LR_DEFAULTCOLOR | LR_CREATEDIBSECTION | LR_LOADFROMFILE);
+
+	m_nfData.cbSize = sizeof(NOTIFYICONDATA);
+	m_nfData.uID = IDICON_UE4Game;
+	m_nfData.hIcon = hIcon;
+	m_nfData.hWnd = hWnd;
+	m_nfData.uCallbackMessage = WM_ICON_NOTIFY;
+	m_nfData.uVersion = NOTIFYICON_VERSION;
+	m_nfData.uFlags = NIF_MESSAGE | NIF_ICON | NIF_TIP | NIF_INFO;
+	
+	lstrcpy(m_nfData.szTip, L"Meu Jogo Maneiro!");
+
+	m_nfData.dwInfoFlags = NIIF_INFO;
+	m_nfData.uTimeout = 1000;
+
+	lstrcpy(m_nfData.szInfo, L"Content");
+	lstrcpy(m_nfData.szInfoTitle, L"Blablabla");
+
+	return Shell_NotifyIcon(NIM_ADD, &m_nfData);
 }
 

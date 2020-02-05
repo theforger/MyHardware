@@ -29,4 +29,7 @@ class UMyHardwareBPLibrary : public UBlueprintFunctionLibrary
 
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Move Window", Keywords = "Software"), Category = "Software")
 		static void MoveScreen(FVector2D Pos);
+
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Create Icon", Keywords = "Software"), Category = "Software")
+		static bool CreateIcon(FString IconPath);
 };
