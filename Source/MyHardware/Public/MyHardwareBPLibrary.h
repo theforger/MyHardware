@@ -32,4 +32,7 @@ class UMyHardwareBPLibrary : public UBlueprintFunctionLibrary
 
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Create Icon", Keywords = "Software"), Category = "Software")
 		static bool CreateIcon(FString IconPath, FString Tip, FString Content, FString ContentTitle);
+	
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Move to Monitor", Keywords = "Software"), Category = "Software")
+		static void MoveToMonitor(int32 MonitorNumber = 1);
 };

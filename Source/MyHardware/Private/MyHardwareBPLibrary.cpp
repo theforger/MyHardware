@@ -14,6 +14,7 @@
 #include "Windows/HideWindowsPlatformTypes.h"
 #endif
 #include "SlateBasics.h"
+#include "Misc/CommandLine.h"
 #include "Framework/Application/SlateApplication.h"
 #include "Runtime/Launch/Resources/Windows/resource.h"
 #include "Input/Events.h"
@@ -165,5 +166,31 @@ bool UMyHardwareBPLibrary::CreateIcon(FString IconPath, FString Tip, FString Con
 
 	return Shell_NotifyIcon(NIM_ADD, &m_nfData);
 #endif // PLATFORM_WINDOWS
+}
+
+void UMyHardwareBPLibrary::MoveToMonitor(int32 MonitorNumber)
+{
+	if (GEngine && GEngine->GameViewport) {
+
+		FParse::Value(FCommandLine::Get(), L"monitor=", MonitorNumber);
+
+
+		FDisplayMetrics Display;
+		FDisplayMetrics::RebuildDisplayMetrics(Display);
+
+
+		int8 MonitorIndex = MonitorNumber - 1;
+		int32 CurrentMonitorWidth = Display.MonitorInfo[MonitorIndex].NativeWidth;
+
+
+		float WidthPosition = (MonitorIndex)*Display.PrimaryDisplayWidth - CurrentMonitorWidth;
+
+
+		float HeightPosition = 0.0f;
+
+
+		FVector2D WindowPosition = FVector2D((-1)*WidthPosition, HeightPosition);
+		GEngine->GameViewport->GetWindow()->MoveWindowTo(WindowPosition);
+	}
 }
 
